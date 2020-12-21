@@ -7,12 +7,13 @@ import { ByteData } from "./byteData";
 import { EditMessage } from "./editHandler";
 
 /**
- * @description BufferOptions type used to describe how many chunks are wanted above and below a given chunk 
+ * @description BufferOptions type used to describe how many chunks are wanted above and below a given chunk
  */
 export type BufferOptions =  {
     topBufferSize: number;
     bottomBufferSize: number;
-}
+};
+
 /**
  * @description A chunkhandler which holds the chunks and handles requesting new ones
  */
@@ -45,7 +46,7 @@ export class ChunkHandler {
         const chunkStart = this.retrieveChunkStart(offset);
         return this.chunks.has(chunkStart);
     }
-    
+
     /**
      * @description Sends a request to the extension for the packets which would make up the requested chunks
      * @param {number} chunkStart The start of the chunk which you're requesting
@@ -98,7 +99,7 @@ export class ChunkHandler {
         const chunksToRequestArr: number[] = [...chunksToRequest].filter(x => !this.chunks.has(x));
         //If it's inside the buffer (which the chunksToRequest set holds) then we keep it, else it's deleted
         const chunksOutsideBuffer: number[] = [...this.chunks].filter(x => !chunksToRequest.has(x));
-        
+
         // We stop tracking the old chunks and we request the new ones
         chunksOutsideBuffer.forEach(chunk => this.removeChunk(chunk));
         const requested: Promise<void>[] = [];
@@ -145,10 +146,10 @@ export class ChunkHandler {
         virtualHexDocument.render(packets);
         virtualHexDocument.redo(edits, fileSize);
     }
-     
+
     /**
      * @description Adds a chunk with the given chunk offset to the handler
-     * @param {number} offset The offset which holds the chunk start 
+     * @param {number} offset The offset which holds the chunk start
      */
     public addChunk(offset: number): void {
         this.chunks.add(offset);
@@ -156,7 +157,7 @@ export class ChunkHandler {
 
     /**
      * @description Deletes a chunk with the given chunk offset to the handler
-     * @param {number} offset The offset which holds the chunk start 
+     * @param {number} offset The offset which holds the chunk start
      */
     public removeChunk(offset: number): void {
         this.chunks.delete(offset);
